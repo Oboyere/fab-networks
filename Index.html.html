@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Fab Network Ltd. - Retail Shop</title>
+<style>
+  /* Basic reset */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 0;
+    background: #f9f9f9;
+    color: #333;
+  }
+
+  header {
+    background: #005bbb;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+
+  nav {
+    background: #003d7a;
+  }
+  nav ul {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  nav li {
+    flex: 1;
+    text-align: center;
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: white;
+    padding: 15px 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+  nav button:hover,
+  nav button.active {
+    background: #0073e6;
+  }
+
+  main {
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+
+  section {
+    display: none;
+  }
+  section.active {
+    display: block;
+  }
+
+  /* About Us */
+  #about {
+    line-height: 1.6;
+  }
+
+  /* Job Application form */
+  #jobApplication form {
+    max-width: 500px;
+    background: white;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  #jobApplication label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  #jobApplication input, 
+  #jobApplication select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  #jobApplication button {
+    background: #005bbb;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  #jobApplication button:hover {
+    background: #003d7a;
+  }
+
+  /* Products grid as blocks/cards */
+  #productsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+    gap: 20px;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .product-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background: #f0f0f0;
+  }
+  .product-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #005bbb;
+  }
+  .product-price {
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #0073e6;
+  }
+  .product-desc {
+    flex-grow: 1;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    color: #555;
+  }
+  .add-cart-btn {
+    background: #0073e6;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  .add-cart-btn:hover {
+    background: #005bbb;
+  }
+
+  /* Cart summary */
+  #cartSummary {
+    margin-top: 30px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.12);
+  }
+  #cartItems {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+  }
+  .cart-item:last-child {
+    border-bottom: none;
+  }
+  #cartTotal {
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+
+  /* Order buttons */
+  #orderButtons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  #orderButtons button {
+    flex: 1;
+    min-width: 140px;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  #whatsappOrder {
+    background: #25D366;
+  }
+  #whatsappOrder:hover {
+    background: #128C7E;
+  }
+  #emailOrder {
+    background: #0073e6;
+  }
+  #emailOrder:hover {
+    background: #005bbb;
+  }
+
+  /* Payment instructions tab */
+  #paymentInstructions {
+    max-width: 700px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 9px rgba(0,0,0,0.12);
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+  #paymentInstructions h2 {
+    color: #005bbb;
+    margin-bottom: 15px;
+  }
+  #paymentInstructions ol {
+    padding-left: 20px;
+  }
+  #paymentInstructions ol li {
+    margin-bottom: 10px;
+  }
+
+  /* Responsive */
+  @media(max-width: 600px) {
+    nav ul {
+      flex-direction: column;
+    }
+    nav li {
+      flex: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>Fab Network Ltd.</header>
+
+<nav>
+  <ul>
+    <li><button class="tab-btn active" data-tab="about">About Us</button></li>
+    <li><button class="tab-btn" data-tab="jobApplication">Job Application</button></li>
+    <li><button class="tab-btn" data-tab="products">Products</button></li>
+    <li><button class="tab-btn" data-tab="paymentInstructions">Payment Instructions</button></li>
+  </ul>
+</nav>
+
+<main>
+  <section id="about" class="active">
+    <h1>About Fab Network Ltd.</h1>
+    <p>Fab Network Ltd. is your trusted retail shop located at Kibomet-Namawanga along Kitale-Kapenguria Road. We specialize in malimali items including phone accessories, school items, women bags, printers, computers, and solar lighting solutions.</p>
+    <p>Contact us at +254 700 000 000 or email fabnetworkltd@example.com.</p>
+    <p><strong>Free home deliveries within the local area.</strong></p>
+  </section>
+
+   <section id="jobApplication">
+    <h1>Job Application</h1>
+    <form action="https://formsubmit.co/fablitedsoboyere@gmail.com" method="POST">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_subject" value="New Job Application - Fab Network Ltd.">
+
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="Full Name" required>
+
+        <label for="county">County</label>
+        <input type="text" id="county" name="County" required>
+
+        <label for="gender">Gender</label>
+        <select id="gender" name="Gender" required>
+            <option value="" disabled selected>Select gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+        </select>
+
+        <label for="age">Age</label>
+        <input type="number" id="age" name="Age" min="15" max="100" required>
+
+        <label for="education">Highest Education Level</label>
+        <select id="education" name="Education Level" required>
+            <option value="" disabled selected>Select education level</option>
+            <option>Primary</option>
+            <option>Secondary</option>
+            <option>Diploma</option>
+            <option>Degree</option>
+            <option>Masters</option>
+            <option>PhD</option>
+        </select>
+
+        <label for="job">Job Applying For</label>
+        <select id="job" name="Job Role" required>
+            <option value="" disabled selected>Select job</option>
+            <option>Salesperson</option>
+            <option>Cashier</option>
+            <option>Delivery Driver</option>
+            <option>Inventory Manager</option>
+            <option>Customer Service</option>
+        </select>
+
+        <button type="submit">Submit Application</button>
+    </form>
+</section>
+  <section id="products">
+    <h1>Our Products</h1>
+    <div id="productsGrid"></div>
+
+    <div id="cartSummary">
+      <h2>Your Cart</h2>
+      <div id="cartItems"></div>
+      <div id="cartTotal"></div>
+      <div id="orderButtons">
+        <button id="whatsappOrder" title="Order via WhatsApp">Order via WhatsApp</button>
+        <button id="emailOrder" title="Order via Email">Order via Email</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="paymentInstructions">
+    <h2>M-PESA Payment Instructions</h2>
+    <ol>
+      <li>Go to your M-PESA menu on your phone.</li>
+      <li>Select <strong>Send Money</strong>.</li>
+      <li>Select <strong>Send to Phone Number</strong>.</li>
+      <li>Enter the Till Number: <strong>0759064950</strong></li>
+      <li>Enter the amount for your order.</li>
+      <li>Enter your M-PESA PIN and confirm the transaction.</li>
+      <li>You will receive an SMS confirmation. Please keep it for your records.</li>
+      <li>Send us the M-PESA transaction code via WhatsApp or Email to confirm your payment and order.</li>
+    </ol>
+    <p>If you need assistance, contact us at +254 759064950.</p>
+  </section>
+</main>
+<script>
+  // Tab navigation
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const sections = document.querySelectorAll('main > section');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      sections.forEach(sec => sec.classList.remove('active'));
+      button.classList.add('active');
+      document.getElementById(button.dataset.tab).classList.add('active');
+    });
+  });
+// Products data
+  const products = [
+    { name: "Normal Cable", price: 200, image:"images1.jpeg", desc: "Fast Original charging USB phone charger."},
+     { name: "Normal Cable", price: 200, image:"images (5).jpeg", desc: "Fast Original charging USB phone charger."},
+       { name: "Normal Cable", price: 200, image: "images99.jpeg", desc: "Fast Original charging USB phone charger." },
+     { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+       { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+     { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+      { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+     { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+       { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+     { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+       { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+     { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+      { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+     { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+       { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+     { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+       { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+     { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+      { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+     { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+       { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+     { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+       { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+     { name: "Normal Cable", price: 200, image: "amaya.jpg", desc: "Fast Original charging USB phone charger." },
+    // Add more if needed, up to 20
+  
+  ];
+
+  const productsGrid = document.getElementById('productsGrid');
+  const cartItemsDiv = document.getElementById('cartItems');
+  const cartTotalDiv = document.getElementById('cartTotal');
+
+  let cart = [];
+
+  // Render products as cards
+  function renderProducts() {
+    productsGrid.innerHTML = '';
+    products.forEach((product, index) => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+
+      card.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <div class="product-name">${product.name}</div>
+        <div class="product-price">KES ${product.price.toLocaleString()}</div>
+        <div class="product-desc">${product.desc}</div>
+        <button class="add-cart-btn" data-index="${index}">Add to Cart</button>
+      `;
+      productsGrid.appendChild(card);
+    });
+
+    // Add event listeners to all add to cart buttons
+    document.querySelectorAll('.add-cart-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const idx = parseInt(button.dataset.index);
+        addToCart(idx);
+      });
+    });
+  }
+
+  function addToCart(productIndex) {
+    const cartItem = cart.find(item => item.index === productIndex);
+    if (cartItem) {
+      cartItem.quantity++;
+    } else {
+      cart.push({ index: productIndex, quantity: 1 });
+    }
+    renderCart();
+  }
+
+  function removeFromCart(productIndex) {
+    cart = cart.filter(item => item.index !== productIndex);
+    renderCart();
+  }
+
+  function renderCart() {
+    if (cart.length === 0) {
+      cartItemsDiv.innerHTML = '<p>Your cart is empty.</p>';
+      cartTotalDiv.textContent = '';
+      return;
+    }
+
+    cartItemsDiv.innerHTML = '';
+    cart.forEach(item => {
+      const product = products[item.index];
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'cart-item';
+      itemDiv.innerHTML = `
+        <span>${product.name} x ${item.quantity}</span>
+        <span>KES ${(product.price * item.quantity).toLocaleString()}</span>
+        <button title="Remove item" style="background:none; border:none; color:red; cursor:pointer; font-weight:bold;">&times;</button>
+      `;
+      itemDiv.querySelector('button').addEventListener('click', () => removeFromCart(item.index));
+      cartItemsDiv.appendChild(itemDiv);
+    });
+
+    const total = cart.reduce((acc, item) => acc + products[item.index].price * item.quantity, 0);
+    cartTotalDiv.textContent = `Total: KES ${total.toLocaleString()}`;
+  }
+
+  // WhatsApp order
+  document.getElementById('whatsappOrder').addEventListener('click', () => {
+    if (cart.length === 0) {
+      alert('Your cart is empty!');
+      return;
+    }
+    const phoneNumber = "254700000000"; // Replace with your WhatsApp number (no +)
+    let message = 'Hello Fab Network Ltd., I would like to place an order:\n\n';
+    cart.forEach(item => {
+      const p = products[item.index];
+      message += `${p.name} x ${item.quantity} = KES ${ (p.price * item.quantity).toLocaleString() }\n`;
+    });
+    const total = cart.reduce((acc, item) => acc + (products[item.index].price * item.quantity), 0);
+    message += `\nTotal: KES ${total.toLocaleString()}\n\nPlease confirm availability and delivery details.`;
+
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  });
+
+  // Email order
+  document.getElementById('emailOrder').addEventListener('click', () => {
+    if (cart.length === 0) {
+      alert('Your cart is empty!');
+      return;
+    }
+    const email = "fabnetworkltd@example.com"; // Replace with your email
+    let subject = "Order from Fab Network Ltd.";
+    let body = "Hello Fab Network Ltd.,%0D%0A%0D%0AI would like to place an order:%0D%0A%0D%0A";
+    cart.forEach(item => {
+      const p = products[item.index];
+      body += `${p.name} x ${item.quantity} = KES ${ (p.price * item.quantity).toLocaleString() }%0D%0A`;
+    });
+    const total = cart.reduce((acc, item) => acc + (products[item.index].price * item.quantity), 0);
+    body += `%0D%0ATotal: KES ${total.toLocaleString()}%0D%0A%0D%0APlease confirm availability and delivery details.%0D%0A%0D%0AThank you.`;
+
+    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${body}`;
+    window.location.href = mailtoLink;
+  });
+
+  // Initialize
+  renderProducts();
+  renderCart();
+</script>
+
+</body>
+</html>
